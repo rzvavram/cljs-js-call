@@ -8,7 +8,7 @@
 ;; define your app data so that it doesn't get over-written on reload
 
 ;;MODEL
-(defonce app-state (atom {:text "Hello world!"}))
+(defonce app-state (atom {:text "Hello " :person {:name "Dan" :age 21}}))
 
 
 ;;CONTROLLER
@@ -16,9 +16,15 @@
   (swap! app-state assoc :text title))
 
 
+(defn ^:extern change_person [person]
+  (swap! app-state assoc :person (js->clj person :keywordize-keys true)))
+
+
 ;;VIEWS
 (defn hello-world []
-  [:h1 (:text @app-state)])
+  [:div
+    (str (@app-state :text) (get-in @app-state [:person :name]) "!")])
+
 
 
 
